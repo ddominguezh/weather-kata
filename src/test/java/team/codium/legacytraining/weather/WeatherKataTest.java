@@ -24,4 +24,8 @@ public class WeatherKataTest {
         assertEquals("", new Forecast().predict(null, LocalDate.now().plusDays(7), false));
     }
     
+    @Test
+    public void get_prediction_from_barcelona_today() throws IOException{
+        assertEquals("Rain: Slight, moderate and heavy intensity", new Forecast().predict("Barcelona", null, false));
+    }
 }
