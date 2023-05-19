@@ -22,33 +22,10 @@ public class Forecast {
         if (datetime == null) {
             datetime = LocalDate.now();
         }
-        String format = datetime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-
         // If there are predictions
         if (datetime.isBefore(LocalDate.now().plusDays(7))) {
-
             Coordinate coordinate = this.cityRepository.coordinateOf(city);
-
-            // Find the predictions for the location
-            HttpRequestFactory requestFactory = new NetHttpTransport().createRequestFactory();
-            HttpRequest request = requestFactory.buildGetRequest(
-                    new GenericUrl("https://api.open-meteo.com/v1/forecast?latitude=" + coordinate.latitude() + "&longitude=" + coordinate.longitude() + "&daily=weathercode,windspeed_10m_max&current_weather=true&timezone=Europe%2FBerlin"));
-                    String rawResponse = request.execute().parseAsString();
-            JSONObject results = new JSONObject(rawResponse).getJSONObject("daily");
-
-            JSONArray times = results.getJSONArray("time");
-            for (int i = 0; i < times.length(); i++) {
-//            // When the date is the expected
-                if (format.equals(times.get(i))) {
-//                // If we have to return the wind information
-                    if (wind) {
-                        return Prediction.create(String.valueOf(results.getJSONArray("windspeed_10m_max").getFloat(i)));
-                    } else {
-                        int weatherCode = results.getJSONArray("weathercode").getInt(i);
-                        return Prediction.create(weatherCode);
-                    }
-                }
-            }
+            return new OpenMeteoApiWeatherRepository().predictionBy(coordinate, datetime, wind);
         }
         return Prediction.NULL();
     }
