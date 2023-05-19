@@ -9,6 +9,9 @@ public class Prediction {
     protected Prediction(String value){
         this.value = value;
     }
+    public static Prediction create(String value){
+        return new Prediction(value);
+    }
     public static Prediction create(int code){
         return new Prediction(codeToText(code));
     }

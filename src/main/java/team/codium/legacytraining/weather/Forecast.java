@@ -47,7 +47,7 @@ public class Forecast {
                 if (format.equals(times.get(i))) {
 //                // If we have to return the wind information
                     if (wind) {
-                        return String.valueOf(results.getJSONArray("windspeed_10m_max").getFloat(i));
+                        return Prediction.create(String.valueOf(results.getJSONArray("windspeed_10m_max").getFloat(i))).value();
                     } else {
                         int weatherCode = results.getJSONArray("weathercode").getInt(i);
                         return Prediction.create(weatherCode).value();
