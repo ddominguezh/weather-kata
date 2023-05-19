@@ -18,5 +18,10 @@ public class WeatherKataTest {
     
         assertEquals("xxx", "xxx");
     }
+
+    @Test
+    public void predictions_empty_when_the_date_is_greater_than_seven_days_from_today() throws IOException{
+        assertEquals("", new Forecast().predict(null, LocalDate.now().plusDays(7), false));
+    }
     
 }
