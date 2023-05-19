@@ -11,6 +11,6 @@ public class GeoApiCityRepositoryTest {
     @Test
     public void get_coordinate_of_barcelona() throws IOException{
         GeoApiCityRepository repository = new GeoApiCityRepository();
-        assertEquals(Coordinate.create((float)41.400347, (float)2.159592), repository.coordinateOf("Barcelona"));
+        assertEquals(CoordinateMother.for_barcelona(), repository.coordinateOf("Barcelona"));
     }
 }

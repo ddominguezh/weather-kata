@@ -24,7 +24,7 @@ public class WeatherKataTest {
     @BeforeEach
     public void setUp() throws IOException{
         this.cityRepository = mock(CityRepository.class);
-        when(this.cityRepository.coordinateOf(anyString())).thenReturn(Coordinate.create((float)41.400347, (float)2.159592));
+        when(this.cityRepository.coordinateOf(anyString())).thenReturn(CoordinateMother.for_barcelona());
 
         this.weatherRepository = mock(WeatherRepository.class);
     }
