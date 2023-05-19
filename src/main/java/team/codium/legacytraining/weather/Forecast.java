@@ -10,11 +10,10 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Forecast {
-    public String predict(String city, LocalDate datetime, boolean wind) throws IOException {
+
+    public Prediction predict(String city, LocalDate datetime, boolean wind) throws IOException {
         // When date is not provided we look for the current prediction
         if (datetime == null) {
             datetime = LocalDate.now();
@@ -47,16 +46,14 @@ public class Forecast {
                 if (format.equals(times.get(i))) {
 //                // If we have to return the wind information
                     if (wind) {
-                        return Prediction.create(String.valueOf(results.getJSONArray("windspeed_10m_max").getFloat(i))).value();
+                        return Prediction.create(String.valueOf(results.getJSONArray("windspeed_10m_max").getFloat(i)));
                     } else {
                         int weatherCode = results.getJSONArray("weathercode").getInt(i);
-                        return Prediction.create(weatherCode).value();
+                        return Prediction.create(weatherCode);
                     }
                 }
             }
-        } else {
-            return "";
         }
-        return "";
+        return Prediction.NULL();
     }
 }
