@@ -15,4 +15,10 @@ public class OpenMeteoApiWeatherRepositoryTest {
         OpenMeteoApiWeatherRepository repository = new OpenMeteoApiWeatherRepository();
         assertNotEquals(Prediction.NULL(), repository.predictionBy(Coordinate.create((float)41.400347, (float)2.159592), LocalDate.now(), false));
     }
+
+    @Test
+    public void get_wind_predictions_for_barcelona() throws IOException{
+        OpenMeteoApiWeatherRepository repository = new OpenMeteoApiWeatherRepository();
+        assertNotEquals(Prediction.NULL(), repository.predictionBy(Coordinate.create((float)41.400347, (float)2.159592), LocalDate.now(), true));
+    }
 }
