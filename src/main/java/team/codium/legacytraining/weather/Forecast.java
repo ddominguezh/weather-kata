@@ -23,20 +23,13 @@ public class Forecast {
         // If there are predictions
         if (datetime.isBefore(LocalDate.now().plusDays(7))) {
 
-            // Find the latitude and longitude to get the prediction
-            HttpRequestFactory requestFactory
-                    = new NetHttpTransport().createRequestFactory();
-            HttpRequest request = requestFactory.buildGetRequest(
-                    new GenericUrl("https://positionstack.com/geo_api.php?query=" + city));
-            String rawResponse = request.execute().parseAsString();
-            JSONObject jsonObject = new JSONObject(rawResponse);
-            Coordinate coordinate = Coordinate.create(jsonObject.getJSONArray("data").getJSONObject(0));
+            Coordinate coordinate = new GeoApiCityRepository().coordinateOf(city);
 
             // Find the predictions for the location
-            requestFactory = new NetHttpTransport().createRequestFactory();
-            request = requestFactory.buildGetRequest(
+            HttpRequestFactory requestFactory = new NetHttpTransport().createRequestFactory();
+            HttpRequest request = requestFactory.buildGetRequest(
                     new GenericUrl("https://api.open-meteo.com/v1/forecast?latitude=" + coordinate.latitude() + "&longitude=" + coordinate.longitude() + "&daily=weathercode,windspeed_10m_max&current_weather=true&timezone=Europe%2FBerlin"));
-            rawResponse = request.execute().parseAsString();
+                    String rawResponse = request.execute().parseAsString();
             JSONObject results = new JSONObject(rawResponse).getJSONObject("daily");
 
             JSONArray times = results.getJSONArray("time");
