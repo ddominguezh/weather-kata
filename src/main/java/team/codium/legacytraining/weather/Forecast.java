@@ -13,6 +13,10 @@ import java.time.format.DateTimeFormatter;
 
 public class Forecast {
 
+    private CityRepository cityRepository;
+    public Forecast(CityRepository cityRepository){
+        this.cityRepository = cityRepository;
+    }
     public Prediction predict(String city, LocalDate datetime, boolean wind) throws IOException {
         // When date is not provided we look for the current prediction
         if (datetime == null) {
@@ -23,7 +27,7 @@ public class Forecast {
         // If there are predictions
         if (datetime.isBefore(LocalDate.now().plusDays(7))) {
 
-            Coordinate coordinate = new GeoApiCityRepository().coordinateOf(city);
+            Coordinate coordinate = this.cityRepository.coordinateOf(city);
 
             // Find the predictions for the location
             HttpRequestFactory requestFactory = new NetHttpTransport().createRequestFactory();
