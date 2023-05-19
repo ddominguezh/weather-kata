@@ -30,13 +30,12 @@ public class Forecast {
                     new GenericUrl("https://positionstack.com/geo_api.php?query=" + city));
             String rawResponse = request.execute().parseAsString();
             JSONObject jsonObject = new JSONObject(rawResponse);
-            float latitude = jsonObject.getJSONArray("data").getJSONObject(0).getFloat("latitude");
-            float longitude = jsonObject.getJSONArray("data").getJSONObject(0).getFloat("longitude");
+            Coordinate coordinate = Coordinate.create(jsonObject.getJSONArray("data").getJSONObject(0));
 
             // Find the predictions for the location
             requestFactory = new NetHttpTransport().createRequestFactory();
             request = requestFactory.buildGetRequest(
-                    new GenericUrl("https://api.open-meteo.com/v1/forecast?latitude=" + latitude + "&longitude=" + longitude + "&daily=weathercode,windspeed_10m_max&current_weather=true&timezone=Europe%2FBerlin"));
+                    new GenericUrl("https://api.open-meteo.com/v1/forecast?latitude=" + coordinate.latitude() + "&longitude=" + coordinate.longitude() + "&daily=weathercode,windspeed_10m_max&current_weather=true&timezone=Europe%2FBerlin"));
             rawResponse = request.execute().parseAsString();
             JSONObject results = new JSONObject(rawResponse).getJSONObject("daily");
 
