@@ -48,7 +48,10 @@ public class Prediction {
                 put(99, "Thunderstorm with slight and heavy hail");
             }
         };
-        return translation.get(weatherCode);
+        if(translation.containsKey(weatherCode)){
+            return translation.get(weatherCode);
+        }
+        throw new WeatherCodeNotFoundException(weatherCode);
     }
     public static Prediction NULL(){
         return new Prediction("");
