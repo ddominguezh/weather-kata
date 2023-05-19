@@ -27,16 +27,16 @@ public class WeatherKataTest {
 
     @Test
     public void predictions_empty_when_the_date_is_greater_than_seven_days_from_today() throws IOException{
-        assertEquals(Prediction.NULL(), new Forecast(this.cityRepository).predict(null, LocalDate.now().plusDays(7), false));
+        assertEquals(Prediction.NULL(), new Forecast(this.cityRepository, new OpenMeteoApiWeatherRepository()).predict(null, LocalDate.now().plusDays(7), false));
     }
     
     @Test
     public void get_prediction_from_barcelona_today() throws IOException{
-        assertEquals(Prediction.create("Rain: Slight, moderate and heavy intensity"), new Forecast(this.cityRepository).predict("Barcelona", null, false));
+        assertEquals(Prediction.create("Rain: Slight, moderate and heavy intensity"), new Forecast(this.cityRepository, new OpenMeteoApiWeatherRepository()).predict("Barcelona", null, false));
     }
 
     @Test
     public void get_wind_prediction_from_barcelona_today() throws IOException{
-        assertEquals(Prediction.create("15.7"), new Forecast(this.cityRepository).predict("Barcelona", null, true));
+        assertEquals(Prediction.create("15.7"), new Forecast(this.cityRepository, new OpenMeteoApiWeatherRepository()).predict("Barcelona", null, true));
     }
 }
